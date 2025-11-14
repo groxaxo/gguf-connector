@@ -17,6 +17,21 @@ Update the connector (if previous version installed) by:
 pip install gguf-connector --upgrade
 ```
 With this version, you can interact straight with the GGUF file(s) available in the same directory by a simple command.
+
+### 🎙️ OpenAI-Compatible TTS API Server (NEW!)
+Run a non-interactive OpenAI-compatible TTS API server for serving GGUF models (e.g., VibeVoice) compatible with open-webui:
+```
+python run_tts_server.py
+```
+For detailed setup and usage, see [TTS API Documentation](TTS_API.md) and [Quick Start Guide](QUICKSTART_TTS.md).
+
+**Features:**
+- ✅ OpenAI-compatible `/v1/audio/speech` endpoint
+- ✅ Non-interactive operation with auto-detection of GGUF models
+- ✅ Compatible with open-webui for TTS integration
+- ✅ CUDA acceleration support
+- ✅ Easy deployment and configuration
+
 ### Graphical User Interface (GUI)
 Select model(s) with ctransformers (optional: need ctransformers to work; pip install ctransformers):
 ```
