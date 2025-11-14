@@ -1,0 +1,17 @@
+# Requirements for GGUF TTS API Server
+
+# Core dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+
+# ML/AI dependencies
+torch>=2.0.0
+yvoice>=0.1.0
+
+# Model handling
+safetensors>=0.4.0
+numpy>=1.24.0
+
+# Optional but recommended
+python-multipart>=0.0.6  # For file uploads if needed in future
