@@ -33,7 +33,9 @@ python run_frontend.py
 - 📚 Model Management - Browse and manage your models
 - 📱 Responsive design that works on desktop, tablet, and mobile
 
-For more details, see [Frontend Documentation](frontend/README.md).
+**Documentation:**
+- [Quick Start Guide](QUICKSTART_FRONTEND.md) - Get started in minutes
+- [Frontend Documentation](frontend/README.md) - Full feature details
 
 ### 🎙️ OpenAI-Compatible TTS API Server
 Run a non-interactive OpenAI-compatible TTS API server for serving GGUF models (e.g., VibeVoice) compatible with open-webui:
