@@ -7,13 +7,26 @@ for serving VibeVoice GGUF models for text-to-speech generation.
 import os
 import io
 import base64
-import torch
 from typing import Optional, List
-from fastapi import FastAPI, HTTPException, File, UploadFile
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import Response, JSONResponse
-from pydantic import BaseModel, Field
-import uvicorn
+
+# Check if core dependencies are available
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    print("Warning: torch not installed. Install with: pip install torch")
+
+try:
+    from fastapi import FastAPI, HTTPException, File, UploadFile
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import Response, JSONResponse
+    from pydantic import BaseModel, Field
+    import uvicorn
+    FASTAPI_AVAILABLE = True
+except ImportError:
+    FASTAPI_AVAILABLE = False
+    print("Warning: fastapi/uvicorn not installed. Install with: pip install fastapi uvicorn pydantic")
 
 # Check if yvoice is available
 try:
@@ -24,39 +37,54 @@ except ImportError:
     YVOICE_AVAILABLE = False
     print("Warning: yvoice not installed. Install with: pip install yvoice")
 
-from .tph import get_hf_cache_hub_path
-from .quant3 import convert_gguf_to_safetensors
-from .quant4 import add_metadata_to_safetensors
+# Import gguf_connector utilities - these should always be available
+try:
+    from .tph import get_hf_cache_hub_path
+    from .quant3 import convert_gguf_to_safetensors
+    from .quant4 import add_metadata_to_safetensors
+except ImportError:
+    # Allow running standalone for testing
+    try:
+        import sys
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
+        from gguf_connector.tph import get_hf_cache_hub_path
+        from gguf_connector.quant3 import convert_gguf_to_safetensors
+        from gguf_connector.quant4 import add_metadata_to_safetensors
+    except ImportError as e:
+        print(f"Warning: Could not import gguf_connector utilities: {e}")
 
 
-class TTSRequest(BaseModel):
-    """OpenAI-compatible TTS request model"""
-    model: str = Field(default="vibevoice", description="The model to use for TTS")
-    input: str = Field(..., description="The text to convert to speech")
-    voice: str = Field(default="alloy", description="The voice to use")
-    response_format: str = Field(default="mp3", description="Audio format (mp3, opus, aac, flac, wav, pcm)")
-    speed: float = Field(default=1.0, description="Speech speed (0.25 to 4.0)")
+# Define data models only if FastAPI is available
+if FASTAPI_AVAILABLE:
+    class TTSRequest(BaseModel):
+        """OpenAI-compatible TTS request model"""
+        model: str = Field(default="vibevoice", description="The model to use for TTS")
+        input: str = Field(..., description="The text to convert to speech")
+        voice: str = Field(default="alloy", description="The voice to use")
+        response_format: str = Field(default="mp3", description="Audio format (mp3, opus, aac, flac, wav, pcm)")
+        speed: float = Field(default=1.0, description="Speech speed (0.25 to 4.0)")
 
 
-class ModelInfo(BaseModel):
-    """Model information"""
-    id: str
-    object: str = "model"
-    created: int = 1677649963
-    owned_by: str = "gguf-connector"
+    class ModelInfo(BaseModel):
+        """Model information"""
+        id: str
+        object: str = "model"
+        created: int = 1677649963
+        owned_by: str = "gguf-connector"
 
 
-class ModelsResponse(BaseModel):
-    """Models list response"""
-    object: str = "list"
-    data: List[ModelInfo]
+    class ModelsResponse(BaseModel):
+        """Models list response"""
+        object: str = "list"
+        data: List[ModelInfo]
 
 
-class TTSServer:
-    """OpenAI-compatible TTS Server for GGUF models"""
-    
-    def __init__(self, model_path: Optional[str] = None, host: str = "0.0.0.0", port: int = 8000):
-        self.app = FastAPI(
+if FASTAPI_AVAILABLE and TORCH_AVAILABLE:
+    class TTSServer:
+        """OpenAI-compatible TTS Server for GGUF models"""
+        
+        def __init__(self, model_path: Optional[str] = None, host: str = "0.0.0.0", port: int = 8000):
+            self.app = FastAPI(
             title="GGUF TTS API",
             description="OpenAI-compatible TTS API for GGUF models",
             version="1.0.0"
@@ -314,6 +342,17 @@ def main():
     """Main entry point for the TTS server"""
     import argparse
     
+    # Check dependencies
+    if not FASTAPI_AVAILABLE:
+        print("Error: FastAPI not installed. Install with: pip install fastapi uvicorn pydantic")
+        print("Or install all requirements: pip install -r requirements-tts-server.txt")
+        return 1
+    
+    if not TORCH_AVAILABLE:
+        print("Error: PyTorch not installed. Install with: pip install torch")
+        print("Or install all requirements: pip install -r requirements-tts-server.txt")
+        return 1
+    
     parser = argparse.ArgumentParser(description="GGUF TTS API Server")
     parser.add_argument(
         "--model",
@@ -338,6 +377,7 @@ def main():
     
     server = TTSServer(model_path=args.model, host=args.host, port=args.port)
     server.run()
+    return 0
 
 
 if __name__ == "__main__":
