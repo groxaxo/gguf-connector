@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GGUF Connector - Futuristic AI Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-container">
+        <div class="grid-overlay"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#00ff88;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#00c3ff;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <polygon points="20,2 38,12 38,28 20,38 2,28 2,12" fill="none" stroke="url(#logoGradient)" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="8" fill="url(#logoGradient)"/>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">GGUF</span>
+                    <span class="logo-subtitle">CONNECTOR</span>
+                </div>
+            </div>
+            <div class="header-status">
+                <div class="status-indicator" id="statusIndicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">SYSTEM ONLINE</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <button class="nav-item active" data-section="chat">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>CHAT AI</span>
+            </button>
+            <button class="nav-item" data-section="image">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span>IMAGE GEN</span>
+            </button>
+            <button class="nav-item" data-section="editor">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span>IMG EDIT</span>
+            </button>
+            <button class="nav-item" data-section="tts">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                <span>TTS</span>
+            </button>
+            <button class="nav-item" data-section="tools">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                </svg>
+                <span>TOOLS</span>
+            </button>
+            <button class="nav-item" data-section="models">
+                <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <span>MODELS</span>
+            </button>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="content-area">
+            <!-- Chat Section -->
+            <section id="chat" class="section active">
+                <div class="section-header">
+                    <h2 class="section-title">AI CHAT INTERFACE</h2>
+                    <p class="section-subtitle">Interact with GGUF language models</p>
+                </div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="welcome-message">
+                            <div class="welcome-icon">🤖</div>
+                            <h3>Welcome to GGUF Connector</h3>
+                            <p>Select a model and start chatting with AI</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <div class="model-selector">
+                            <select id="chatModel" class="model-select">
+                                <option value="">Select Model...</option>
+                            </select>
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <textarea id="chatInput" class="chat-input" placeholder="Type your message..." rows="1"></textarea>
+                            <button id="chatSend" class="send-button">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Image Generation Section -->
+            <section id="image" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">IMAGE GENERATION</h2>
+                    <p class="section-subtitle">Create images using Flux, Stable Diffusion, and more</p>
+                </div>
+                <div class="image-gen-container">
+                    <div class="control-panel">
+                        <div class="form-group">
+                            <label>Model</label>
+                            <select id="imageModel" class="input-field">
+                                <option value="flux">Flux</option>
+                                <option value="sd35">Stable Diffusion 3.5</option>
+                                <option value="pixart">PixArt</option>
+                                <option value="lumina">Lumina</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Prompt</label>
+                            <textarea id="imagePrompt" class="input-field" rows="3" placeholder="Describe the image you want to generate..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Width</label>
+                                <input type="number" id="imageWidth" class="input-field" value="1024" min="256" max="2048" step="64">
+                            </div>
+                            <div class="form-group">
+                                <label>Height</label>
+                                <input type="number" id="imageHeight" class="input-field" value="1024" min="256" max="2048" step="64">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Steps: <span id="stepsValue">25</span></label>
+                                <input type="range" id="imageSteps" class="slider" min="1" max="50" value="25">
+                            </div>
+                            <div class="form-group">
+                                <label>Guidance: <span id="guidanceValue">7.5</span></label>
+                                <input type="range" id="imageGuidance" class="slider" min="1" max="20" value="7.5" step="0.5">
+                            </div>
+                        </div>
+                        <button id="generateImage" class="primary-button">
+                            <span>GENERATE</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="preview-panel">
+                        <div id="imagePreview" class="image-preview">
+                            <div class="placeholder-content">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                <p>Generated image will appear here</p>
+                            </div>
+                        </div>
+                        <div class="image-actions">
+                            <button class="action-button" id="downloadImage" disabled>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                DOWNLOAD
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Image Editor Section -->
+            <section id="editor" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">IMAGE EDITOR</h2>
+                    <p class="section-subtitle">Edit images with AI-powered tools</p>
+                </div>
+                <div class="editor-container">
+                    <div class="control-panel">
+                        <div class="form-group">
+                            <label>Upload Image</label>
+                            <div class="file-upload">
+                                <input type="file" id="editorImageUpload" accept="image/*" hidden>
+                                <button class="upload-button" onclick="document.getElementById('editorImageUpload').click()">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                                    </svg>
+                                    CHOOSE FILE
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Edit Instruction</label>
+                            <textarea id="editorPrompt" class="input-field" rows="3" placeholder="Describe what you want to change..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Guidance Scale: <span id="editorGuidanceValue">2.5</span></label>
+                            <input type="range" id="editorGuidance" class="slider" min="1" max="10" value="2.5" step="0.1">
+                        </div>
+                        <button id="applyEdit" class="primary-button" disabled>
+                            <span>APPLY EDIT</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="preview-panel">
+                        <div class="editor-preview" id="editorPreview">
+                            <div class="placeholder-content">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                <p>Upload an image to start editing</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TTS Section -->
+            <section id="tts" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">TEXT-TO-SPEECH</h2>
+                    <p class="section-subtitle">Convert text to natural speech using GGUF models</p>
+                </div>
+                <div class="tts-container">
+                    <div class="control-panel">
+                        <div class="form-group">
+                            <label>Voice Model</label>
+                            <select id="ttsModel" class="input-field">
+                                <option value="vibevoice">VibeVoice</option>
+                                <option value="dia">Dia</option>
+                                <option value="higgs">Higgs</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Voice</label>
+                            <select id="ttsVoice" class="input-field">
+                                <option value="alloy">Alloy</option>
+                                <option value="echo">Echo</option>
+                                <option value="fable">Fable</option>
+                                <option value="onyx">Onyx</option>
+                                <option value="nova">Nova</option>
+                                <option value="shimmer">Shimmer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Text to Speak</label>
+                            <textarea id="ttsText" class="input-field" rows="5" placeholder="Enter the text you want to convert to speech..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Speed: <span id="ttsSpeedValue">1.0</span>x</label>
+                            <input type="range" id="ttsSpeed" class="slider" min="0.5" max="2" value="1" step="0.1">
+                        </div>
+                        <button id="generateSpeech" class="primary-button">
+                            <span>GENERATE SPEECH</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="preview-panel">
+                        <div class="audio-player" id="audioPlayer">
+                            <div class="placeholder-content">
+                                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                                </svg>
+                                <p>Audio will appear here</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Section -->
+            <section id="tools" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">GGUF TOOLS</h2>
+                    <p class="section-subtitle">Convert, quantize, and manage GGUF files</p>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">🔄</div>
+                        <h3>Convert</h3>
+                        <p>Convert between GGUF and SafeTensors formats</p>
+                        <button class="tool-button">LAUNCH</button>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">⚡</div>
+                        <h3>Quantize</h3>
+                        <p>Quantize models to reduce size</p>
+                        <button class="tool-button">LAUNCH</button>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">🔗</div>
+                        <h3>Merge</h3>
+                        <p>Merge multiple GGUF files</p>
+                        <button class="tool-button">LAUNCH</button>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">✂️</div>
+                        <h3>Split</h3>
+                        <p>Split GGUF files into parts</p>
+                        <button class="tool-button">LAUNCH</button>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">📊</div>
+                        <h3>Metadata</h3>
+                        <p>Read and edit model metadata</p>
+                        <button class="tool-button">LAUNCH</button>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-icon">🔍</div>
+                        <h3>Inspect</h3>
+                        <p>Inspect tensor information</p>
+                        <button class="tool-button">LAUNCH</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Models Section -->
+            <section id="models" class="section">
+                <div class="section-header">
+                    <h2 class="section-title">MODEL MANAGEMENT</h2>
+                    <p class="section-subtitle">Browse and manage your GGUF models</p>
+                </div>
+                <div class="models-container">
+                    <div class="models-list" id="modelsList">
+                        <div class="placeholder-content">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                            <p>No models found in current directory</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="loader">
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <span class="loader-text">PROCESSING...</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
