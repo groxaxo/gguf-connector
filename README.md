@@ -18,7 +18,26 @@ pip install gguf-connector --upgrade
 ```
 With this version, you can interact straight with the GGUF file(s) available in the same directory by a simple command.
 
-### 🎙️ OpenAI-Compatible TTS API Server (NEW!)
+### 🚀 Futuristic Web Frontend (NEW!)
+Experience all GGUF Connector features through a stunning, cyberpunk-inspired web interface:
+```
+python run_frontend.py
+```
+**Features:**
+- ✨ Modern, futuristic UI with glassmorphism and neon effects
+- 🤖 AI Chat Interface - Interactive chat with GGUF language models
+- 🎨 Image Generation - Create images with Flux, Stable Diffusion, PixArt, and Lumina
+- ✏️ Image Editor - AI-powered image editing with Kontext
+- 🎙️ Text-to-Speech - Convert text to natural speech
+- 🛠️ GGUF Tools - Convert, quantize, merge, split, and manage GGUF files
+- 📚 Model Management - Browse and manage your models
+- 📱 Responsive design that works on desktop, tablet, and mobile
+
+**Documentation:**
+- [Quick Start Guide](QUICKSTART_FRONTEND.md) - Get started in minutes
+- [Frontend Documentation](frontend/README.md) - Full feature details
+
+### 🎙️ OpenAI-Compatible TTS API Server
 Run a non-interactive OpenAI-compatible TTS API server for serving GGUF models (e.g., VibeVoice) compatible with open-webui:
 ```
 python run_tts_server.py
